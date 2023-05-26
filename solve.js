@@ -1,6 +1,6 @@
 /* solve Javascript Library */
 /* Powered by Xbodw. */
-
+/* Version 1.02 */
 var solve = new Object();
 solve.chatdata = { "apiKey" : "Press Keys To Here.", };
 solve.chatmessages = [];
