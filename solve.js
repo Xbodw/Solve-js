@@ -2,8 +2,8 @@
 /* Powered by Xbodw. */
 
 var solve = new Object();
-var chatdata = { "apiKey" : "Press Keys To Here.", };
-var chatmessages = [];
+solve.chatdata = { "apiKey" : "Press Keys To Here.", };
+solve.chatmessages = [];
 solve.chatOutput = '';
 solve.Addscript = function(url,insertposition) {
   var script = document.createElement('script');
@@ -22,12 +22,12 @@ solve.CheckHTML = function(str) {
     return pattern.test(str);
   }
 
-solve.addResponseMessage = function(message,outvalue) {
+solve.addResponseMessage = function(message) {
     let escapedMessage = message;
     solve.chatOutput = escapedMessage;
   }
 
-solve.sendRequest = async function(data,ele,link) {
+solve.sendRequest = async function(data,link) {
     const response = await fetch(link, {
       method: 'POST',
       headers: {
@@ -60,7 +60,7 @@ solve.sendRequest = async function(data,ele,link) {
         const jsonObj = JSON.parse(line);
         if (jsonObj.choices && jsonObj.choices[0].delta.content) {
           str += jsonObj.choices[0].delta.content;
-          await solve.addResponseMessage(str,ele);
+          await solve.addResponseMessage(str);
         }else{
           if(jsonObj.error){
             console.error(jsonObj.error.type + " : " + jsonObj.error.message);
@@ -73,13 +73,13 @@ solve.sendRequest = async function(data,ele,link) {
     return str;
   }
 
-solve.ReponseChatAI = async function(text,key,connecttype,outele) {
+solve.ReponseChatAI = async function(text,key,connecttype) {
  let link = '';
 if(connecttype == "http-nokey") {
   link = 'http://152.32.207.62/v1/chat/completions';
 } else { link = 'https://open.aiproxy.xyz/v1/chat/completions'; }
- chatmessages.push({"role": "user", "content": text})
- chatdata.prompt = chatmessages;
-    await solve.sendRequest(chatdata,outele,link).then((res) => {chatmessages.push({"role": "assistant", "content": res})});
+ solve.chatmessages.push({"role": "user", "content": text})
+ solve.chatdata.prompt = solve.chatmessages;
+    await solve.sendRequest(solve.chatdata,link).then((res) => {solve.chatmessages.push({"role": "assistant", "content": res})});
 }
 
